@@ -1,0 +1,49 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.pyc
+*.env
+.env
+venv/
+ENV/
+*.egg-info/
+*.egg
+
+# Jupyter Notebooks
+.ipynb_checkpoints
+
+# VS Code
+.vscode/
+
+# Data
+*.sqlite3
+*.db
+*.log
+*.csv
+*.tsv
+*.parquet
+*.h5
+*.hdf5
+*.json
+*.xlsx
+*.xls
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Deployment
+*.bak
+*.swp
+Procfile
+
+# Others
+*.tmp
+*.cache
+
+# Ignore data folders
+/data/chroma/
+/data/nec/
+/data/wattmonk/
