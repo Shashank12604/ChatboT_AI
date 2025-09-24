@@ -44,12 +44,14 @@ class RAGRetriever:
         for i, (score, idx) in enumerate(zip(scores[0], indices[0])):
             if idx < len(self._metadata[namespace]):
                 meta = self._metadata[namespace][idx]
+                # In the search method, fix the scoring:
                 results.append({
                     "id": str(idx),
                     "text": meta.get("text", ""),
-                    "score": float(1.0 / (1.0 + score)),
+                    "score": float(score),  # FAISS inner product returns similarity directly
                     "source": meta.get("source", namespace),
                 })
+
         
         return results
 

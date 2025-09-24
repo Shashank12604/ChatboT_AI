@@ -76,32 +76,27 @@ def health():
 async def chat(req: ChatRequest):
     try:
         _ensure_components()
-
+        
         if not req.messages:
             raise HTTPException(status_code=400, detail="messages required")
-
+        
         user_msg = req.messages[-1].content
-
+        # Pass full conversation history
+        conversation_history = [{"role": msg.role, "content": msg.content} for msg in req.messages]
+        
         intent = _intent(user_msg)
-
+        
         if intent == "general":
-            answer = _generator(user_msg, [])
+            answer = _generator(user_msg, [], conversation_history)
             return ChatResponse(answer=answer, intent=intent, confidence=0.6)
-
+        
         results = _retriever.search(user_msg, namespace=intent, top_k=req.top_k)
-
         contexts = [r["text"] for r in results]
-        sources = [
-            SourceDoc(
-                source=r.get("source", intent),
-                chunk_id=r.get("id"),
-                score=r.get("score"),
-                snippet=r.get("text", "")[:400],
-            )
-            for r in results
-        ] if req.include_sources else None
-
-        answer = _generator(user_msg, contexts)
+        
+        # Pass conversation history to generator
+        answer = _generator(user_msg, contexts, conversation_history)
+        
+        # ... rest remains the same
 
         scores = [r.get("score") for r in results if isinstance(r.get("score"), (int, float))]
         confidence = float(sum(scores) / len(scores)) if scores else 0.5
