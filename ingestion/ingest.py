@@ -46,6 +46,9 @@ def ingest_dir(root: str, namespace: str, embed_model: str = "text-embedding-3-s
 	client = chromadb.PersistentClient(path=persist_dir)
 	collection = ensure_collection(client, f"kb_{namespace}", embed_model)
 
+	# Initialize sentence-transformers model
+	sentence_model = SentenceTransformer('all-MiniLM-L6-v2')
+
 	added_chunks = 0
 	files = []
 	for dirpath, _, filenames in os.walk(root):
