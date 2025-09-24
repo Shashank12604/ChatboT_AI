@@ -1,6 +1,6 @@
 from __future__ import annotations
 import os
-from typing import List
+from typing import List,Dict
 
 from openai import OpenAI
 
